@@ -7,6 +7,7 @@ import com.eazybytes.accounts.constants.AccountsConstants;
 import com.eazybytes.accounts.dto.CustomerDto;
 import com.eazybytes.accounts.entity.Accounts;
 import com.eazybytes.accounts.entity.Customer;
+import com.eazybytes.accounts.exception.CustomerAlreadyExistsException;
 import com.eazybytes.accounts.mapper.CustomerMapper;
 import com.eazybytes.accounts.repository.AccountsRepository;
 import com.eazybytes.accounts.repository.CustomerRepository;
@@ -22,6 +23,9 @@ public class AccountsServiceImpl implements IAccountsService{
 	
 	@Override
 	public void createAccount(CustomerDto customerDto) {
+		if(customerRepository.findByMobileNumber(customerDto.getMobileNumber()) != null) {
+			throw new CustomerAlreadyExistsException("Customer already registered with given mobile number " + customerDto.getMobileNumber());
+		}
 		Customer customer = CustomerMapper.mapToCustomer(customerDto);
 		Customer savedCustomer = customerRepository.save(customer);
 		accountsRepository.save(createNewAccount(savedCustomer));
