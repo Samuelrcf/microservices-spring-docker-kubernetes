@@ -1,14 +1,38 @@
 package com.eazybytes.accounts.dto;
 
-import lombok.Data;
+import java.util.UUID;
 
-@Data
 public class AccountsDto {
 	
-	private Long accountNumber;
+	private UUID accountNumber;
 	
 	private String accountType;
 	
 	private String branchAddress;
+
+	public UUID getAccountNumber() {
+		return accountNumber;
+	}
+
+	public void setAccountNumber(UUID accountNumber) {
+		this.accountNumber = accountNumber;
+	}
+
+	public String getAccountType() {
+		return accountType;
+	}
+
+	public void setAccountType(String accountType) {
+		this.accountType = accountType;
+	}
+
+	public String getBranchAddress() {
+		return branchAddress;
+	}
+
+	public void setBranchAddress(String branchAddress) {
+		this.branchAddress = branchAddress;
+	}
+	
 	
 }
