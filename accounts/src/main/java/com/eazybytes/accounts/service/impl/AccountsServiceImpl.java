@@ -1,6 +1,5 @@
 package com.eazybytes.accounts.service.impl;
 
-import java.time.LocalDateTime;
 import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,8 +34,6 @@ public class AccountsServiceImpl implements IAccountsService{
 			throw new CustomerAlreadyExistsException("Customer already registered with given mobile number " + customerDto.getMobileNumber());
 		}
 		Customer customer = CustomerMapper.mapToCustomer(customerDto);
-		customer.setCreatedAt(LocalDateTime.now());
-		customer.setCreatedBy("Anonymous");
 		Customer savedCustomer = customerRepository.save(customer);
 		accountsRepository.save(createNewAccount(savedCustomer));
 	}
@@ -49,8 +46,6 @@ public class AccountsServiceImpl implements IAccountsService{
         newAccount.setAccountNumber(randomAccNumber);
         newAccount.setAccountType(AccountsConstants.SAVINGS);
         newAccount.setBranchAddress(AccountsConstants.ADDRESS);
-        newAccount.setCreatedAt(LocalDateTime.now());
-        newAccount.setCreatedBy("Anonymous");
         return newAccount;
     }
 
@@ -82,17 +77,11 @@ public class AccountsServiceImpl implements IAccountsService{
 		customer.setEmail(customerDto.getEmail());
 		customer.setMobileNumber(customerDto.getMobileNumber());
 		
-		customer.setUpdateAt(LocalDateTime.now());
-		customer.setUpdateBy("Anonymous2");
-		
 		customerRepository.save(customer);
 		
 		account.setAccountNumber(account.getAccountNumber());
 		account.setAccountType(customerDto.getAccountsDto().getAccountType());
 		account.setBranchAddress(customerDto.getAccountsDto().getBranchAddress());
-		
-		account.setUpdateAt(LocalDateTime.now());
-		account.setUpdateBy("Anonymous2");
 		
 		accountsRepository.save(account);
 		
