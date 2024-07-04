@@ -1,10 +1,6 @@
 package com.eazybytes.accounts.entity;
 
-import java.util.UUID;
-
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
 @Entity
@@ -13,8 +9,7 @@ public class Accounts extends BaseEntity{
 	private Long customerId;
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private UUID accountNumber;
+	private Long accountNumber;
 	
 	private String accountType;
 	
@@ -28,11 +23,11 @@ public class Accounts extends BaseEntity{
 		this.customerId = customerId;
 	}
 
-	public UUID getAccountNumber() {
+	public Long getAccountNumber() {
 		return accountNumber;
 	}
 
-	public void setAccountNumber(UUID accountNumber) {
+	public void setAccountNumber(Long accountNumber) {
 		this.accountNumber = accountNumber;
 	}
 

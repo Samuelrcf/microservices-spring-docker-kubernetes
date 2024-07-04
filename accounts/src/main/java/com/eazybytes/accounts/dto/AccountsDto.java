@@ -1,20 +1,18 @@
 package com.eazybytes.accounts.dto;
 
-import java.util.UUID;
-
 public class AccountsDto {
 	
-	private UUID accountNumber;
+	private Long accountNumber;
 	
 	private String accountType;
 	
 	private String branchAddress;
 
-	public UUID getAccountNumber() {
+	public Long getAccountNumber() {
 		return accountNumber;
 	}
 
-	public void setAccountNumber(UUID accountNumber) {
+	public void setAccountNumber(Long accountNumber) {
 		this.accountNumber = accountNumber;
 	}
 
