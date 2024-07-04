@@ -7,6 +7,8 @@ public class CustomerDto {
 	private String email;
 	
 	private String mobileNumber;
+	
+	private AccountsDto accountsDto;
 
 	public String getName() {
 		return name;
@@ -30,6 +32,14 @@ public class CustomerDto {
 
 	public void setMobileNumber(String mobileNumber) {
 		this.mobileNumber = mobileNumber;
+	}
+
+	public AccountsDto getAccountsDto() {
+		return accountsDto;
+	}
+
+	public void setAccountsDto(AccountsDto accountsDto) {
+		this.accountsDto = accountsDto;
 	}
 	
 	

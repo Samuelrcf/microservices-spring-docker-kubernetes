@@ -7,14 +7,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.eazybytes.accounts.constants.AccountsConstants;
+import com.eazybytes.accounts.dto.AccountsDto;
 import com.eazybytes.accounts.dto.CustomerDto;
 import com.eazybytes.accounts.entity.Accounts;
 import com.eazybytes.accounts.entity.Customer;
 import com.eazybytes.accounts.exception.CustomerAlreadyExistsException;
+import com.eazybytes.accounts.exception.ResourceNotFoundException;
+import com.eazybytes.accounts.mapper.AccountsMapper;
 import com.eazybytes.accounts.mapper.CustomerMapper;
 import com.eazybytes.accounts.repository.AccountsRepository;
 import com.eazybytes.accounts.repository.CustomerRepository;
 import com.eazybytes.accounts.service.IAccountsService;
+
+import jakarta.transaction.Transactional;
 
 @Service
 public class AccountsServiceImpl implements IAccountsService{
@@ -48,4 +53,67 @@ public class AccountsServiceImpl implements IAccountsService{
         newAccount.setCreatedBy("Anonymous");
         return newAccount;
     }
+
+	@Override
+	public CustomerDto fetchAccount(String mobileNumber) {
+		Customer customer = customerRepository.findByMobileNumber(mobileNumber)
+				.orElseThrow(() -> new ResourceNotFoundException("Customer", "Mobile Number", mobileNumber));
+		
+		Accounts account = accountsRepository.findByCustomerId(customer.getCustomerId())
+				.orElseThrow(() -> new ResourceNotFoundException("Account", "Customer Id", customer.getCustomerId().toString()));
+		
+		CustomerDto customerDto = CustomerMapper.mapToCustomerDto(customer);
+		customerDto.setAccountsDto(AccountsMapper.mapToAccountsDto(account));
+		return customerDto;
+	}
+
+	@Transactional
+	@Override
+	public CustomerDto updateAccount(CustomerDto customerDto) {
+		AccountsDto accountsDto = customerDto.getAccountsDto();
+
+		Accounts account = accountsRepository.findById(accountsDto.getAccountNumber())
+				.orElseThrow(() -> new ResourceNotFoundException("Account", "Account Number", accountsDto.getAccountNumber().toString()));
+		
+		Customer customer = customerRepository.findById(account.getCustomerId())
+				.orElseThrow(() -> new ResourceNotFoundException("Customer", "Customer ID", account.getCustomerId().toString()));
+		
+		customer.setName(customerDto.getName());
+		customer.setEmail(customerDto.getEmail());
+		customer.setMobileNumber(customerDto.getMobileNumber());
+		
+		customer.setUpdateAt(LocalDateTime.now());
+		customer.setUpdateBy("Anonymous2");
+		
+		customerRepository.save(customer);
+		
+		account.setAccountNumber(account.getAccountNumber());
+		account.setAccountType(customerDto.getAccountsDto().getAccountType());
+		account.setBranchAddress(customerDto.getAccountsDto().getBranchAddress());
+		
+		account.setUpdateAt(LocalDateTime.now());
+		account.setUpdateBy("Anonymous2");
+		
+		accountsRepository.save(account);
+		
+		CustomerDto customerDto2 = CustomerMapper.mapToCustomerDto(customer);
+		
+		AccountsDto accountsDto2 = AccountsMapper.mapToAccountsDto(account);
+		
+		customerDto2.setAccountsDto(accountsDto2);
+		
+		return customerDto2;
+	}
+
+	@Transactional
+	@Override
+	public void deleteAccount(String mobileNumber) {
+		Customer customer = customerRepository
+				.findByMobileNumber(mobileNumber).orElseThrow(() -> new ResourceNotFoundException("Customer", "Mobile Number", mobileNumber));
+		
+		customerRepository.delete(customer);
+		accountsRepository.deleteByCustomerId(customer.getCustomerId());
+	}
+	
+	
 }
