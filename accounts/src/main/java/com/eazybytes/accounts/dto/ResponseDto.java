@@ -8,13 +8,11 @@ import io.swagger.v3.oas.annotations.media.Schema;
 public class ResponseDto {
 
 	@Schema(
-			description="Status code in the response",
-			example="200")
+			description="Status code in the response")
     private String statusCode;
 	
 	@Schema(
-			description="Status message in the response",
-			example="Request processed successfully")
+			description="Status message in the response")
     private String statusMsg;
 
     public ResponseDto(String statusCode, String statusMsg) {
