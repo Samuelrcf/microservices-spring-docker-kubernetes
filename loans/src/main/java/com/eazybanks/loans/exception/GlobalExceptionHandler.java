@@ -1,4 +1,4 @@
-package com.eazybytes.cards.exception;
+package com.eazybanks.loans.exception;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import com.eazybytes.cards.dto.ErrorResponseDto;
+import com.eazybanks.loans.dto.ErrorResponseDto;
 
 @ControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
@@ -48,8 +48,8 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 		return new ResponseEntity<>(errorResponseDTO, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 	
-    @ExceptionHandler(CardAlreadyExistsException.class)
-    public ResponseEntity<ErrorResponseDto> handleCardAlreadyExistsException(CardAlreadyExistsException exception,
+    @ExceptionHandler(LoanAlreadyExistsException.class)
+    public ResponseEntity<ErrorResponseDto> handleCardAlreadyExistsException(LoanAlreadyExistsException exception,
                                                                                  WebRequest webRequest){
         ErrorResponseDto errorResponseDTO = new ErrorResponseDto(
                 webRequest.getDescription(false),

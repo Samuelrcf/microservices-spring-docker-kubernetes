@@ -1,7 +1,5 @@
 package com.eazybytes.cards.service.impl;
 
-import java.time.LocalDateTime;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,11 +19,9 @@ public class CardsServiceImpl implements ICardsService{
 
 	public void createCard(CardDto cardDto) {
 		if(cardsRepository.findCardsByCardNumber(cardDto.getCardNumber()).isPresent()) {
-			throw new CardAlreadyExistsException("Cards", "Card Number", cardDto.getCardNumber());
+			throw new CardAlreadyExistsException("The Card given already exists");
 		}
 		Cards card = CardsMapper.CardDtoToCard(cardDto);
-		card.setCreatedAt(LocalDateTime.now());
-		card.setCreatedBy("Anonymous");
 		cardsRepository.save(card);
 	}
 
@@ -43,8 +39,6 @@ public class CardsServiceImpl implements ICardsService{
 		card.setCardType(cardDto.getCardType());
 		card.setMobileNumber(cardDto.getMobileNumber());
 		card.setTotalLimit(cardDto.getTotalLimit());
-		card.setUpdateAt(LocalDateTime.now());
-		card.setUpdateBy("Anonymous 2");
 		cardsRepository.save(card);
 		return CardsMapper.CardToCardDto(card);
 		
