@@ -1,30 +1,38 @@
 package com.eazybanks.loans.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.PositiveOrZero;
 
+@Schema(name = "Loans", description = "Schema to hold Loan information")
 public class LoansDto {
 
+	@Schema(description = "Mobile Number of SR Bank loan", example = "1234567890")
 	@NotBlank(message = "Mobile Number can not be a null or blank")
 	@Pattern(regexp = "^$|[0-9]{10}", message = "Mobile number must be 10 digits")
 	private String mobileNumber;
 
-	@NotBlank(message = "Mobile Number can not be a null or blank")
+	@Schema(description = "Loan Number of SR Bank account", example = "548732457654")
+	@NotBlank(message = "Loan Number can not be a null or blank")
 	@Pattern(regexp = "^$|[0-9]{12}", message = "Mobile number must be 10 digits")
 	private String loanNumber;
 
+	@Schema(description = "Type of the loan", example = "Home Loan")
 	@NotBlank(message = "Loan Type can not be a null or blank.")
 	private String loanType;
 
-	@Positive(message="Total Loan should be greater than zero")
+	@Schema(description = "Total loan amount", example = "100000")
+	@Positive(message = "Total Loan should be greater than zero")
 	private int totalLoan;
 
-	@PositiveOrZero(message="Amount Paid should be greater or equal than zero")
+	@Schema(description = "Total loan amount paid", example = "1000")
+	@PositiveOrZero(message = "Amount Paid should be greater or equal than zero")
 	private int amountPaid;
 
-	@PositiveOrZero(message="Outstanding Amount should be greater or equal than zero")
+	@Schema(description = "Total outstanding amount against a loan", example = "99000")
+	@PositiveOrZero(message = "Outstanding Amount should be greater or equal than zero")
 	private int outstandingAmount;
 
 	public LoansDto() {

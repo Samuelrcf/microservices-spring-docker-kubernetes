@@ -1,47 +1,54 @@
 package com.eazybytes.cards.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 
+@Schema(
+		name="Cards",
+		description="Schema to hold Card information")
 public class CardDto {
 
+	@Schema(
+			description="Mobile Number of the customer",
+			example="4365327698")
 	@NotBlank(message = "Mobile Number can not be a null or blank")
 	@Pattern(regexp = "^$|[0-9]{10}", message = "Mobile number must be 10 digits")
 	private String mobileNumber;
 
+	@Schema(
+			description="Card Number of the customer",
+			example="548732457654")
 	@NotBlank(message = "Mobile Number can not be a null or blank")
 	@Pattern(regexp = "^$|[0-9]{12}", message = "Card Number must be 16 digits")
 	private String cardNumber;
 
+	@Schema(
+			description="Card Type of the customer",
+			example="Credit Card")
 	@NotBlank(message = "Card Type can not be a null.")
 	private String cardType;
 
+	@Schema(
+			description="Total Limit amount",
+			example="1000000")
 	@NotNull(message = "Total Limit can not be a null.")
 	private int totalLimit;
 
+	@Schema(
+			description="Total card amount used",
+			example="1000000")
 	@NotNull(message = "Amount Used can not be a null.")
 	private int amountUsed;
 
+	@Schema(
+			description="Total card amount available",
+			example="1000000")
 	@NotNull(message = "Available can not be a null.")
 	private int availableAmount;
 
 	public CardDto() {
-	}
-
-	public CardDto(
-			@NotBlank(message = "Mobile Number can not be a null or blank") @Pattern(regexp = "^$|[0-9]{10}", message = "Mobile number must be 10 digits") String mobileNumber,
-			@NotBlank(message = "Mobile Number can not be a null or blank") @Pattern(regexp = "^$|[0-9]{12}", message = "Card Number must be 12 digits") String cardNumber,
-			@NotBlank(message = "Card Type can not be a null.") String cardType,
-			@NotNull(message = "Total Limit can not be a null.") int totalLimit,
-			@NotNull(message = "Amount Used can not be a null.") int amountUsed,
-			@NotNull(message = "Available can not be a null.") int availableAmount) {
-		this.mobileNumber = mobileNumber;
-		this.cardNumber = cardNumber;
-		this.cardType = cardType;
-		this.totalLimit = totalLimit;
-		this.amountUsed = amountUsed;
-		this.availableAmount = availableAmount;
 	}
 
 	public String getMobileNumber() {
