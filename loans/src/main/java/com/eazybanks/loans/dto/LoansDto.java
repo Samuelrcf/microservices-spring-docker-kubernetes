@@ -1,44 +1,33 @@
 package com.eazybanks.loans.dto;
 
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.PositiveOrZero;
 
 public class LoansDto {
 
+	@NotBlank(message = "Mobile Number can not be a null or blank")
 	@Pattern(regexp = "^$|[0-9]{10}", message = "Mobile number must be 10 digits")
 	private String mobileNumber;
 
-	@Pattern(regexp = "^$|[0-9]{16}", message = "Mobile number must be 10 digits")
+	@NotBlank(message = "Mobile Number can not be a null or blank")
+	@Pattern(regexp = "^$|[0-9]{12}", message = "Mobile number must be 10 digits")
 	private String loanNumber;
 
 	@NotBlank(message = "Loan Type can not be a null or blank.")
 	private String loanType;
 
-	@NotNull(message = "Loan Type can not be a null.")
+	@Positive(message="Total Loan should be greater than zero")
 	private int totalLoan;
 
-	@NotNull(message = "Amount Paid can not be a null.")
+	@PositiveOrZero(message="Amount Paid should be greater or equal than zero")
 	private int amountPaid;
 
-	@NotNull(message = "Outstanding Amount can not be a null.")
+	@PositiveOrZero(message="Outstanding Amount should be greater or equal than zero")
 	private int outstandingAmount;
 
 	public LoansDto() {
-	}
-
-	public LoansDto(@Pattern(regexp = "^$|[0-9]{10}", message = "Mobile number must be 10 digits") String mobileNumber,
-			@Pattern(regexp = "^$|[0-9]{16}", message = "Mobile number must be 10 digits") String loanNumber,
-			@NotBlank(message = "Loan Type can not be a null or blank.") String loanType,
-			@NotNull(message = "Loan Type can not be a null.") int totalLoan,
-			@NotNull(message = "Amount Paid can not be a null.") int amountPaid,
-			@NotNull(message = "Outstanding Amount can not be a null.") int outstandingAmount) {
-		this.mobileNumber = mobileNumber;
-		this.loanNumber = loanNumber;
-		this.loanType = loanType;
-		this.totalLoan = totalLoan;
-		this.amountPaid = amountPaid;
-		this.outstandingAmount = outstandingAmount;
 	}
 
 	public String getMobileNumber() {

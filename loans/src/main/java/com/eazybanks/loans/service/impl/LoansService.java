@@ -1,8 +1,11 @@
 package com.eazybanks.loans.service.impl;
 
+import java.util.Random;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.eazybanks.loans.constants.LoansConstants;
 import com.eazybanks.loans.dto.LoansDto;
 import com.eazybanks.loans.entity.Loans;
 import com.eazybanks.loans.exception.LoanAlreadyExistsException;
@@ -18,12 +21,19 @@ public class LoansService implements ILoansService{
 	LoansRepository loansRepository;
 
 	@Override
-	public void create(LoansDto loansDto) {
-		if(loansRepository.findLoansByMobileNumber(loansDto.getMobileNumber()).isPresent()) {
-			throw new LoanAlreadyExistsException("Loan already registered with given mobile number " + loansDto.getMobileNumber());
+	public void create(String mobileNumber) {
+		if(loansRepository.findLoansByMobileNumber(mobileNumber).isPresent()) {
+			throw new LoanAlreadyExistsException("Loan already registered with given mobile number " + mobileNumber);
 		}
-		Loans loans = LoansMapper.loanDtoToLoan(loansDto);
-		loansRepository.save(loans);
+		Loans loan = new Loans();
+        long randomLoanNumber = 100000000000L + new Random().nextInt(900000000);
+        loan.setLoanNumber(Long.toString(randomLoanNumber));
+		loan.setAmountPaid(0);
+		loan.setLoanType(LoansConstants.HOME_LOAN);
+		loan.setMobileNumber(mobileNumber);
+		loan.setOutstandingAmount(LoansConstants.NEW_LOAN_LIMIT);
+		loan.setTotalLoan(LoansConstants.NEW_LOAN_LIMIT);
+		loansRepository.save(loan);
 	}
 
 	@Override
@@ -35,18 +45,10 @@ public class LoansService implements ILoansService{
 
 	@Override
 	public LoansDto update(LoansDto loansDto) {
-		Loans loans = loansRepository.findLoansByMobileNumber(loansDto.getMobileNumber())
-				.orElseThrow(() -> new ResourceNotFoundException("Loans", "Mobile Number", loansDto.getMobileNumber()));
-		
-		loans.setAmountPaid(loansDto.getAmountPaid());
-		loans.setLoanNumber(loansDto.getLoanNumber());
-		loans.setLoanType(loansDto.getLoanType());
-		loans.setMobileNumber(loansDto.getMobileNumber());
-		loans.setOutstandingAmount(loansDto.getOutstandingAmount());
-		loans.setTotalLoan(loansDto.getTotalLoan());
-		
+		Loans loans = loansRepository.findLoansByLoanNumber(loansDto.getLoanNumber())
+				.orElseThrow(() -> new ResourceNotFoundException("Loans", "Loan Number", loansDto.getLoanNumber()));
+		LoansMapper.loanDtoToLoan(loansDto, loans);
 		loansRepository.save(loans);
-		
 		return LoansMapper.loanToLoanDto(loans);
 	}
 
@@ -55,7 +57,6 @@ public class LoansService implements ILoansService{
 		Loans loans = loansRepository.findLoansByMobileNumber(mobileNumber)
 				.orElseThrow(() -> new ResourceNotFoundException("Loans", "Mobile Number", mobileNumber));
 		loansRepository.delete(loans);
-		
 	}
 	
 }

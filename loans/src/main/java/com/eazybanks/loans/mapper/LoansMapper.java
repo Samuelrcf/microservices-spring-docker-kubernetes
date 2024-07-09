@@ -5,8 +5,7 @@ import com.eazybanks.loans.entity.Loans;
 
 public class LoansMapper {
 
-	static public Loans loanDtoToLoan (LoansDto loansDto) {
-		Loans loans = new Loans();
+	static public Loans loanDtoToLoan (LoansDto loansDto, Loans loans) {
 		loans.setAmountPaid(loansDto.getAmountPaid());
 		loans.setLoanNumber(loansDto.getLoanNumber());
 		loans.setLoanType(loansDto.getLoanType());

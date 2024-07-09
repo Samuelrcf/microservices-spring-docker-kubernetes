@@ -20,43 +20,40 @@ import com.eazybytes.cards.dto.ResponseDto;
 import com.eazybytes.cards.service.ICardsService;
 
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 
 @RestController
-@RequestMapping(path="/api", produces= {MediaType.APPLICATION_JSON_VALUE})
+@RequestMapping(path = "/api", produces = { MediaType.APPLICATION_JSON_VALUE })
 @Validated
 public class CardsController {
-	
+
 	@Autowired
 	ICardsService cardsService;
 
 	@PostMapping("/create")
-	public ResponseEntity<ResponseDto> createCard(@Valid @RequestBody CardDto cardDto){
-		cardsService.createCard(cardDto);
-		return ResponseEntity
-				.status(HttpStatus.CREATED)
+	public ResponseEntity<ResponseDto> createCard(
+			@RequestParam @NotBlank(message = "Mobile number cannot be empty") @Pattern(regexp = "^$|[0-9]{10}", message = "Mobile number must be 10 digits") String mobileNumber) {
+		cardsService.createCard(mobileNumber);
+		return ResponseEntity.status(HttpStatus.CREATED)
 				.body(new ResponseDto(CardsConstants.STATUS_201, CardsConstants.MESSAGE_201));
 	}
-	
+
 	@GetMapping("/fetch")
-	public ResponseEntity<CardDto> fetchCard(@RequestParam @Pattern(regexp="^$|[0-9]{10}", message="Mobile number must be 10 digits") String mobileNumber){
-		return ResponseEntity
-				.status(HttpStatus.OK)
-				.body(cardsService.fetchCard(mobileNumber));
+	public ResponseEntity<CardDto> fetchCard(
+			@RequestParam @NotBlank(message = "Mobile number cannot be empty") @Pattern(regexp = "^$|[0-9]{10}", message = "Mobile number must be 10 digits") String mobileNumber) {
+		return ResponseEntity.status(HttpStatus.OK).body(cardsService.fetchCard(mobileNumber));
 	}
 
 	@PutMapping("/update")
-	public ResponseEntity<CardDto> updateCard(@Valid @RequestBody CardDto cardDto){
-		return ResponseEntity
-				.status(HttpStatus.OK)
-				.body(cardsService.updateCard(cardDto));
+	public ResponseEntity<CardDto> updateCard(@Valid @RequestBody CardDto cardDto) {
+		return ResponseEntity.status(HttpStatus.OK).body(cardsService.updateCard(cardDto));
 	}
-	
+
 	@DeleteMapping("/delete")
-	public ResponseEntity<Void> deleteCard(@RequestParam @Pattern(regexp="^$|[0-9]{10}", message="Mobile number must be 10 digits") String mobileNumber){
+	public ResponseEntity<Void> deleteCard(
+			@RequestParam @NotBlank(message = "Mobile number cannot be empty") @Pattern(regexp = "^$|[0-9]{10}", message = "Mobile number must be 10 digits") String mobileNumber) {
 		cardsService.deleteCard(mobileNumber);
-		return ResponseEntity
-				.status(HttpStatus.NO_CONTENT)
-				.build();
+		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 	}
 }

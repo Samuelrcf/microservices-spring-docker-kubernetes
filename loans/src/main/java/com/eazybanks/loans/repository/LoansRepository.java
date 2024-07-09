@@ -11,5 +11,6 @@ import com.eazybanks.loans.entity.Loans;
 public interface LoansRepository extends JpaRepository<Loans, Long>{
 
 	Optional<Loans> findLoansByMobileNumber(String mobileNumber);
+	Optional<Loans> findLoansByLoanNumber(String mobileNumber);
 
 }

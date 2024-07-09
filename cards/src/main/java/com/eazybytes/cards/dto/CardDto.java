@@ -6,10 +6,12 @@ import jakarta.validation.constraints.Pattern;
 
 public class CardDto {
 
+	@NotBlank(message = "Mobile Number can not be a null or blank")
 	@Pattern(regexp = "^$|[0-9]{10}", message = "Mobile number must be 10 digits")
 	private String mobileNumber;
 
-	@Pattern(regexp = "^$|[0-9]{16}", message = "Card Number must be 16 digits")
+	@NotBlank(message = "Mobile Number can not be a null or blank")
+	@Pattern(regexp = "^$|[0-9]{12}", message = "Card Number must be 16 digits")
 	private String cardNumber;
 
 	@NotBlank(message = "Card Type can not be a null.")
@@ -27,13 +29,13 @@ public class CardDto {
 	public CardDto() {
 	}
 
-	public CardDto(@Pattern(regexp = "^$|[0-9]{10}", message = "Mobile number must be 10 digits") String mobileNumber,
-			@Pattern(regexp = "^$|[0-9]{16}", message = "Card Number must be 16 digits") String cardNumber,
+	public CardDto(
+			@NotBlank(message = "Mobile Number can not be a null or blank") @Pattern(regexp = "^$|[0-9]{10}", message = "Mobile number must be 10 digits") String mobileNumber,
+			@NotBlank(message = "Mobile Number can not be a null or blank") @Pattern(regexp = "^$|[0-9]{12}", message = "Card Number must be 12 digits") String cardNumber,
 			@NotBlank(message = "Card Type can not be a null.") String cardType,
 			@NotNull(message = "Total Limit can not be a null.") int totalLimit,
 			@NotNull(message = "Amount Used can not be a null.") int amountUsed,
 			@NotNull(message = "Available can not be a null.") int availableAmount) {
-		super();
 		this.mobileNumber = mobileNumber;
 		this.cardNumber = cardNumber;
 		this.cardType = cardType;
@@ -52,6 +54,10 @@ public class CardDto {
 
 	public String getCardNumber() {
 		return cardNumber;
+	}
+
+	public void setCardNumber(String cardNumber) {
+		this.cardNumber = cardNumber;
 	}
 
 	public String getCardType() {
