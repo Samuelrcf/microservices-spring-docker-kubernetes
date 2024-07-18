@@ -10,8 +10,9 @@
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.eazybytes</groupId>
-	<artifactId>cards</artifactId>
+	<artifactId>loans</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
+	<packaging>jar</packaging>
 	<name>cards</name>
 	<description>Microservice for Loans</description>
 	<url />
@@ -76,6 +77,11 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<image>
+						<name>samuelrcf/${project.artifactId}:1.0</name>
+					</image>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>

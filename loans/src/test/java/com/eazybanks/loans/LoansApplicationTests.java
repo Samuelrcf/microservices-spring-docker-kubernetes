@@ -1,4 +1,4 @@
-package com.easybanks.loans;
+package com.eazybanks.loans;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
