@@ -2,7 +2,6 @@ package com.eazybytes.accounts.service.impl;
 
 import java.util.Random;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.eazybytes.accounts.constants.AccountsConstants;
@@ -19,13 +18,13 @@ import com.eazybytes.accounts.repository.CustomerRepository;
 import com.eazybytes.accounts.service.IAccountsService;
 
 import jakarta.transaction.Transactional;
+import lombok.AllArgsConstructor;
 
 @Service
+@AllArgsConstructor
 public class AccountsServiceImpl implements IAccountsService{
 
-	@Autowired
 	private AccountsRepository accountsRepository;
-	@Autowired
 	private CustomerRepository customerRepository;
 	
 	@Override

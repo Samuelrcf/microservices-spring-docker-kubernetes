@@ -1,21 +1,24 @@
 server:
- port: 8081
-
+  port: 8081
 spring:
- application:
-  name: accounts
+  application:
+    name: "cards"
+  profiles:
+    active: "prod"
+  datasource:
+    url: jdbc:mysql://localhost:3308/cardsdb
+    username: root
+    password: root
+  jpa:
+    show-sql: true
+  sql:
+    init:
+      mode: always
+  config:
+    import: "optional:configserver:http://localhost:8083/"
 
- datasource:
-  url: jdbc:h2:mem:testdb
-  username: sa
-  password: ''
-  driverClassName: org.h2.Driver
-  
- h2:
-  console:
-   enabled: true
- jpa:
-   database-platform: org.hibernate.dialect.H2Dialect
-   hibernate:
-    ddl-auto: update
-   show-sql: true
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"

@@ -1,6 +1,7 @@
 package com.eazybytes.cards.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.eazybytes.cards.constants.CardsConstants;
 import com.eazybytes.cards.dto.CardDto;
+import com.eazybytes.cards.dto.CardsContactInfoDto;
 import com.eazybytes.cards.dto.ResponseDto;
 import com.eazybytes.cards.service.ICardsService;
 
@@ -34,8 +36,20 @@ import jakarta.validation.constraints.Pattern;
 		description="CRUD REST API in SRBank to CREATE, UPDATE, FETCH AND DELETE cards details")
 public class CardsController {
 
-	@Autowired
-	ICardsService cardsService;
+	private ICardsService iCardsService;
+	
+	@Value("${build.version}")
+	private String buildVersion;
+	
+	private Environment environment;
+	
+	private CardsContactInfoDto cardsContactInfoDto;
+
+	public CardsController(ICardsService iCardsService, Environment environment, CardsContactInfoDto cardsContactInfoDto) {
+		this.iCardsService = iCardsService;
+		this.environment = environment;
+		this.cardsContactInfoDto = cardsContactInfoDto;
+	}
 	
 	@Operation(
 			summary = "Create Cards REST API",
@@ -46,7 +60,7 @@ public class CardsController {
 	@PostMapping("/create")
 	public ResponseEntity<ResponseDto> createCard(
 			@RequestParam @NotBlank(message = "Mobile number cannot be empty") @Pattern(regexp = "^$|[0-9]{10}", message = "Mobile number must be 10 digits") String mobileNumber) {
-		cardsService.createCard(mobileNumber);
+		iCardsService.createCard(mobileNumber);
 		return ResponseEntity.status(HttpStatus.CREATED)
 				.body(new ResponseDto(CardsConstants.STATUS_201, CardsConstants.MESSAGE_201));
 	}
@@ -60,7 +74,7 @@ public class CardsController {
 	@GetMapping("/fetch")
 	public ResponseEntity<CardDto> fetchCard(
 			@RequestParam @NotBlank(message = "Mobile number cannot be empty") @Pattern(regexp = "^$|[0-9]{10}", message = "Mobile number must be 10 digits") String mobileNumber) {
-		return ResponseEntity.status(HttpStatus.OK).body(cardsService.fetchCard(mobileNumber));
+		return ResponseEntity.status(HttpStatus.OK).body(iCardsService.fetchCard(mobileNumber));
 	}
 
 	@Operation(
@@ -71,7 +85,7 @@ public class CardsController {
 			description="HTTP Status OK")
 	@PutMapping("/update")
 	public ResponseEntity<CardDto> updateCard(@Valid @RequestBody CardDto cardDto) {
-		return ResponseEntity.status(HttpStatus.OK).body(cardsService.updateCard(cardDto));
+		return ResponseEntity.status(HttpStatus.OK).body(iCardsService.updateCard(cardDto));
 	}
 
 	@Operation(
@@ -83,7 +97,40 @@ public class CardsController {
 	@DeleteMapping("/delete")
 	public ResponseEntity<Void> deleteCard(
 			@RequestParam @NotBlank(message = "Mobile number cannot be empty") @Pattern(regexp = "^$|[0-9]{10}", message = "Mobile number must be 10 digits") String mobileNumber) {
-		cardsService.deleteCard(mobileNumber);
+		iCardsService.deleteCard(mobileNumber);
 		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+	}
+	
+	@Operation(
+			summary = "Get Build Information",
+			description = "Get Build Information that is deployed into cards microservice")
+	@ApiResponse(
+			responseCode="200",
+			description="HTTP Status OK")
+	@GetMapping("/build-info")
+	public ResponseEntity<String> getBuildInfo(){
+		return ResponseEntity.status(HttpStatus.OK).body(buildVersion);
+	}
+	
+	@Operation(
+			summary = "Get Number Of Processors",
+			description = "Get number of processors on the machine")
+	@ApiResponse(
+			responseCode="200",
+			description="HTTP Status OK")
+	@GetMapping("/processors")
+	public ResponseEntity<String> getJavaVersion(){
+		return ResponseEntity.status(HttpStatus.OK).body(environment.getProperty("NUMBER_OF_PROCESSORS"));
+	}
+	
+	@Operation(
+			summary = "Get Contact Info",
+			description = "Contact Info details that can be reached out in case of any issues")
+	@ApiResponse(
+			responseCode="200",
+			description="HTTP Status OK")
+	@GetMapping("/contact-info")
+	public ResponseEntity<CardsContactInfoDto> getContactInfo(){
+		return ResponseEntity.status(HttpStatus.OK).body(cardsContactInfoDto);
 	}
 }

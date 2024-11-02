@@ -1,6 +1,7 @@
 package com.eazybanks.loans.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.eazybanks.loans.constants.LoansConstants;
+import com.eazybanks.loans.dto.LoansContactInfoDto;
 import com.eazybanks.loans.dto.LoansDto;
 import com.eazybanks.loans.dto.ResponseDto;
 import com.eazybanks.loans.service.ILoansService;
@@ -34,9 +36,21 @@ import jakarta.validation.constraints.Pattern;
 @Validated
 public class LoansController {
     
-    @Autowired
     ILoansService iLoansService;
 
+	@Value("${build.version}")
+	private String buildVersion;
+	
+	private Environment environment;
+	
+	private LoansContactInfoDto loansContactInfoDto;
+
+	public LoansController(ILoansService iLoansService, Environment environment, LoansContactInfoDto loansContactInfoDto) {
+		this.iLoansService = iLoansService;
+		this.environment = environment;
+		this.loansContactInfoDto = loansContactInfoDto;
+	}
+    
 	@Operation(
 			summary = "Create Loan REST API",
 			description = "REST API to create new loan inside SRBank")
@@ -95,4 +109,37 @@ public class LoansController {
                 .status(HttpStatus.NO_CONTENT)
                 .build();
     }
+	
+	@Operation(
+			summary = "Get Build Information",
+			description = "Get Build Information that is deployed into loans microservice")
+	@ApiResponse(
+			responseCode="200",
+			description="HTTP Status OK")
+	@GetMapping("/build-info")
+	public ResponseEntity<String> getBuildInfo(){
+		return ResponseEntity.status(HttpStatus.OK).body(buildVersion);
+	}
+	
+	@Operation(
+			summary = "Get Number Of Processors",
+			description = "Get number of processors on the machine")
+	@ApiResponse(
+			responseCode="200",
+			description="HTTP Status OK")
+	@GetMapping("/processors")
+	public ResponseEntity<String> getJavaVersion(){
+		return ResponseEntity.status(HttpStatus.OK).body(environment.getProperty("NUMBER_OF_PROCESSORS"));
+	}
+	
+	@Operation(
+			summary = "Get Contact Info",
+			description = "Contact Info details that can be reached out in case of any issues")
+	@ApiResponse(
+			responseCode="200",
+			description="HTTP Status OK")
+	@GetMapping("/contact-info")
+	public ResponseEntity<LoansContactInfoDto> getContactInfo(){
+		return ResponseEntity.status(HttpStatus.OK).body(loansContactInfoDto);
+	}
 }

@@ -26,20 +26,20 @@ public class BaseEntity {
 	
 	@LastModifiedDate
 	@Column(insertable = false)
-	private LocalDateTime updateAt;
+	private LocalDateTime updatedAt;
 	
 	@LastModifiedBy
 	@Column(insertable = false)
-	private String updateBy;
+	private String updatedBy;
 
 	public BaseEntity() {
 	}
 
-	public BaseEntity(LocalDateTime createdAt, String createdBy, LocalDateTime updateAt, String updateBy) {
+	public BaseEntity(LocalDateTime createdAt, String createdBy, LocalDateTime updatedAt, String updatedBy) {
 		this.createdAt = createdAt;
 		this.createdBy = createdBy;
-		this.updateAt = updateAt;
-		this.updateBy = updateBy;
+		this.updatedAt = updatedAt;
+		this.updatedBy = updatedBy;
 	}
 
 	public LocalDateTime getCreatedAt() {
@@ -58,26 +58,26 @@ public class BaseEntity {
 		this.createdBy = createdBy;
 	}
 
-	public LocalDateTime getUpdateAt() {
-		return updateAt;
+	public LocalDateTime getupdatedAt() {
+		return updatedAt;
 	}
 
-	public void setUpdateAt(LocalDateTime updateAt) {
-		this.updateAt = updateAt;
+	public void setupdatedAt(LocalDateTime updatedAt) {
+		this.updatedAt = updatedAt;
 	}
 
-	public String getUpdateBy() {
-		return updateBy;
+	public String getupdatedBy() {
+		return updatedBy;
 	}
 
-	public void setUpdateBy(String updateBy) {
-		this.updateBy = updateBy;
+	public void setupdatedBy(String updatedBy) {
+		this.updatedBy = updatedBy;
 	}
 
 	@Override
 	public String toString() {
-		return "BaseEntity [createdAt=" + createdAt + ", createdBy=" + createdBy + ", updateAt=" + updateAt
-				+ ", updateBy=" + updateBy + "]";
+		return "BaseEntity [createdAt=" + createdAt + ", createdBy=" + createdBy + ", updatedAt=" + updatedAt
+				+ ", updatedBy=" + updatedBy + "]";
 	}
 
 }

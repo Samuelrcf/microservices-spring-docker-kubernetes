@@ -1,0 +1,8 @@
+build:
+ version: "1.0"
+  
+loans:
+ message: "Welcome to Loans related prod APIs"
+ contactDetails:
+  name: "Samuel Rógenes"
+  email: "rogenescarvalho@hotmail.com"

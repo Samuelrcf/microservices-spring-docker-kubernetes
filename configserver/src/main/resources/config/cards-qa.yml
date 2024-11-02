@@ -1,0 +1,8 @@
+build:
+ version: "2.0"
+  
+cards:
+ message: "Welcome to Cards related QA APIs"
+ contactDetails:
+  name: "Samuel Rógenes"
+  email: "rogenescarvalho@hotmail.com"
