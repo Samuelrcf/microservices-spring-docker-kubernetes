@@ -1,12 +1,26 @@
-# Projeto de Microsserviços com Java Spring
+# Master Microservices with SpringBoot, Docker, and Kubernetes
 
-Este projeto demonstra a implementação de uma arquitetura de microsserviços utilizando Java Spring, Docker e Kubernetes.
+## Overview
 
-## Visão Geral
+This project accompanies the course **'Master Microservices with SpringBoot, Docker, and Kubernetes'**. The course provides a comprehensive understanding of microservices architecture and practical implementation using various technologies and frameworks.
 
-O objetivo deste projeto é fornecer um exemplo prático de como construir, empacotar e implantar microsserviços em um ambiente containerizado e orquestrado. Este projeto inclui:
+## Course Objectives
 
-- Microsserviços desenvolvidos com Spring Boot
-- Gerenciamento de dependências com Maven
-- Imagens Docker para cada microsserviço
-- Orquestração de containers com Kubernetes
+- **Microservices Architecture**: Understanding microservices and their differences from monolithic and SOA architectures.
+- **Building Microservices**: Creating production-ready microservices using Java, Spring, SpringBoot, and Spring Cloud.
+- **API Documentation**: Documenting microservices using Open API Specification and Swagger.
+- **Service Design**: Right-sizing microservices and identifying service boundaries.
+- **Docker Fundamentals**: Utilizing Docker to build images and containers for microservices.
+- **Docker Compose**: Running multiple microservices together with Docker Compose.
+- **Cloud-Native Applications**: Understanding cloud-native applications and the 15-factor methodology.
+- **Configuration Management**: Managing configurations in microservices using Spring Cloud Config Server.
+- **Service Discovery**: Implementing service discovery with Spring Eureka.
+- **Routing and Cross-Cutting Concerns**: Using Spring Cloud Gateway for handling routing and cross-cutting concerns.
+- **Resilience**: Building resilient microservices with the Resilience4J framework.
+- **Monitoring and Observability**: Implementing observability using Prometheus, Loki, Promtail, Tempo, and Grafana.
+- **Security**: Securing microservices with OAuth2, OpenID Connect, and Spring Security.
+- **Event-Driven Microservices**: Developing event-driven architectures using RabbitMQ, Kafka, and Spring Cloud Stream.
+- **Kubernetes Fundamentals**: Understanding the role of Kubernetes in microservices as a container orchestration framework.
+- **Kubernetes Deployment**: Setting up a Kubernetes cluster in GCP using Google Kubernetes Engine (GKE) and deploying microservices.
+- **Helm**: Learning about Helm and its role in managing Kubernetes applications.
+- **Command Line Proficiency**: Mastering commonly used Docker, Kubernetes, and Helm commands.
