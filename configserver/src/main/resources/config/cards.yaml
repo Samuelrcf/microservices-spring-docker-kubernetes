@@ -1,8 +1,0 @@
-build:
- version: "3.0"
-  
-cards:
- message: "Welcome to Cards related local APIs"
- contactDetails:
-  name: "Samuel Rógenes"
-  email: "rogenescarvalho@hotmail.com"

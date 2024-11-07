@@ -21,4 +21,25 @@ management:
   endpoints:
     web:
       exposure:
-        include: "*"
+        include: "*" #isso basicamente expõe todos os endpoints do actuator
+  endpoint:
+    shutdown:
+      enabled: true
+  info:
+    env:
+      enabled: true
+        
+eureka:
+  instance:
+    preferIpAddress: true #usar end ip em vez de hostname, visto que localmente n existe dns
+  client:
+    fetchRegistry: true
+    registerWithEureka: true
+    serviceUrl:
+      defaultZone: http://localhost:8070/eureka/
+      
+info:
+  app:
+    name: "accounts"
+    description: "Eazy Bank Accounts Application"
+    version: "1.0.0"

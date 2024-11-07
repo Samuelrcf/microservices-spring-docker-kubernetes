@@ -1,8 +1,0 @@
-build:
- version: "2.0"
-  
-accounts:
- message: "Welcome to Accounts related QA APIs"
- contactDetails:
-  name: "Samuel Rógenes"
-  email: "rogenescarvalho@hotmail.com"

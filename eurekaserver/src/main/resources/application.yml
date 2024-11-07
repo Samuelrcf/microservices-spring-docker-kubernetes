@@ -1,0 +1,20 @@
+spring:
+  application:
+    name: "eurekaserver"
+  config:
+    import: "optional:configserver:http://localhost:8083/"
+    
+management: 
+  endpoints:
+   web:
+    exposure:
+     include: "*"  
+  health:
+   readiness-state:
+    enabled: true
+   liveness-state:
+    enabled: true
+  endpoint: #mencionar endpoints específicos
+   health:
+    probes:
+     enabled: true #permite que outros serviços ou orquestradores (como Kubernetes) monitorem e saibam quando a instância está pronta ou viva

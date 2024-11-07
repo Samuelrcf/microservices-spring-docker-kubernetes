@@ -85,6 +85,15 @@
 			<artifactId>lombok</artifactId>
 			<optional>true</optional>
 		</dependency>
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+			<scope>runtime</scope>
+		</dependency>
 	</dependencies>
 	<dependencyManagement>
 		<dependencies>
@@ -105,7 +114,7 @@
 				<version>3.4.2</version>
 				<configuration>
 					<to>
-						<image>eazybytes/${project.artifactId}:s6</image>
+						<image>samuelrcf22/${project.artifactId}:s8</image>
 					</to>
 				</configuration>
 			</plugin>
