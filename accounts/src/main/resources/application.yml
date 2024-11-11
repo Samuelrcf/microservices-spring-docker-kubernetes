@@ -6,25 +6,41 @@ spring:
   profiles:
     active: "prod"
   datasource:
-    url: jdbc:mysql://localhost:3306/accountsdb
-    username: root
-    password: root
+    url: jdbc:h2:mem:testdb
+    driverClassName: org.h2.Driver
+    username: sa
+    password: ''
+  h2:
+    console:
+      enabled: true
   jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: update
     show-sql: true
-  sql:
-    init:
-      mode: always
   config:
     import: "optional:configserver:http://localhost:8083/"
+  cloud:
+    openfeign:
+      circuitbreaker:
+        enabled: true
 
 management:
   endpoints:
     web:
       exposure:
         include: "*" #isso basicamente expõe todos os endpoints do actuator
+  health:
+    readiness-state:
+      enabled: true
+    liveness-state:
+      enabled: true
   endpoint:
     shutdown:
       enabled: true
+    health:
+      probes:
+       enabled: true 
   info:
     env:
       enabled: true
@@ -43,3 +59,36 @@ info:
     name: "accounts"
     description: "Eazy Bank Accounts Application"
     version: "1.0.0"
+    
+logging:
+  level:
+    com:
+      eazybytes:
+        accounts: DEBUG
+        
+resilience4j.circuitbreaker:
+  configs:
+    default: #aqui posso colocar o nome do circuitbreaker definido nos filtros
+      slidingWindowSize: 10 #quantas solicitações monitorar antes de tentar alterar o status de fechado para aberto
+      permittedNumberOfCallsInHalfOpenState: 2 #número permitido de chamadas no status semiaberto
+      failureRateThreshold: 50 #se pelo menos 50% das minhas solicitações falharem, meu padrão de disjuntor poderá mudar para o estado aberto
+      waitDurationInOpenState: 10000 #duração no estado aberto
+      
+resilience4j.retry:
+  configs:
+    default:
+      maxAttempts: 3
+      waitDuration: 500
+      enableExponentialBackoff: true
+      exponentialBackoffMultiplier: 2
+      ignoreExceptions: #ignorar exceções desse tipo quando ocorrer o fallback
+        - java.lang.NullPointerException
+      retryExceptions: #se eu definir essa propriedade, todas as outras exceções serão automaticamente ignoradas, incluse as definidas em ignoreExceptions
+        - java.util.concurrent.TimeoutException
+        
+resilience4j.ratelimiter:
+  configs:
+    default:
+      timeoutDuration: 1000
+      limitRefreshPeriod: 5000
+      limitForPeriod: 1

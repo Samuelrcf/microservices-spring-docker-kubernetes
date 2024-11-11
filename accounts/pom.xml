@@ -91,6 +91,10 @@
 			<artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-circuitbreaker-resilience4j</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
 			<scope>runtime</scope>
@@ -120,7 +124,7 @@
 				<version>3.4.2</version>
 				<configuration>
 					<to>
-						<image>samuelrcf22/${project.artifactId}:s8</image>
+						<image>samuelrcf22/${project.artifactId}:s10</image>
 					</to>
 				</configuration>
 			</plugin>

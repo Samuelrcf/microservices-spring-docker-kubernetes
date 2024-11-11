@@ -1,0 +1,56 @@
+spring:
+  application:
+    name: "gatewayserver"
+  config:
+    import: "optional:configserver:http://localhost:8083/"
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: false #true = dizer ao gateway para se conectar 
+          #ao servidor de descoberta (eureka) e localizar
+          #todos os detalhes sobre os microsserviços
+          #false = não vai mostrar todos os detalhes
+          lowerCaseServiceId: true
+      httpclient: #isso será aplicado a todos os microsserviços e caminhos que passam pelo servidor de gateway
+        connect-timeout: 1000
+        response-timeout: 2000
+  data:
+    redis:
+      connect-timeout: 2s
+      host: localhost
+      port: 6379
+      timeout: 1s
+          
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*" #isso basicamente expõe todos os endpoints do actuator
+  endpoint:
+    gateway:
+      enabled: true #habilitar endpoints relacionados ao gateway
+  info:
+    env:
+      enabled: true
+      
+info:
+  app:
+    name: "gatewayserver"
+    description: "Eazy Bank Gateway Server Application"
+    version: "1.0.0"
+    
+logging:
+  level:
+    com:
+      eazybytes:
+        gatewayserver: DEBUG
+        
+resilience4j.circuitbreaker:
+  configs:
+    default: #aqui posso colocar o nome do circuitbreaker definido nos filtros
+      slidingWindowSize: 10 #quantas solicitações monitorar antes de tentar alterar o status de fechado para aberto
+      permittedNumberOfCallsInHalfOpenState: 2 #número permitido de chamadas no status semiaberto
+      failureRateThreshold: 50 #se pelo menos 50% das minhas solicitações falharem, meu padrão de disjuntor poderá mudar para o estado aberto
+      waitDurationInOpenState: 10000 #duração no estado aberto
+    

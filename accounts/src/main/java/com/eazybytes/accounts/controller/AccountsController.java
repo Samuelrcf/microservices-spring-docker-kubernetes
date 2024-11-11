@@ -1,5 +1,9 @@
 package com.eazybytes.accounts.controller;
 
+import java.util.concurrent.TimeoutException;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
@@ -21,6 +25,8 @@ import com.eazybytes.accounts.dto.CustomerDto;
 import com.eazybytes.accounts.dto.ResponseDto;
 import com.eazybytes.accounts.service.IAccountsService;
 
+import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
+import io.github.resilience4j.retry.annotation.Retry;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -34,6 +40,8 @@ import jakarta.validation.constraints.Pattern;
 @RequestMapping(path="/api", produces= {MediaType.APPLICATION_JSON_VALUE})
 @Validated
 public class AccountsController {
+	
+	private static final Logger logger = LoggerFactory.getLogger(AccountsController.class);
 	
 	private IAccountsService iAccountsService;
 	
@@ -112,9 +120,16 @@ public class AccountsController {
 	@ApiResponse(
 			responseCode="200",
 			description="HTTP Status OK")
+	@Retry(name = "getBuildInfo",fallbackMethod = "getBuildInfoFallback")
 	@GetMapping("/build-info")
-	public ResponseEntity<String> getBuildInfo(){
+	public ResponseEntity<String> getBuildInfo() throws TimeoutException{
+		logger.debug("getBuildInfo() method Invoked");
 		return ResponseEntity.status(HttpStatus.OK).body(buildVersion);
+	}
+	
+	public ResponseEntity<String> getBuildInfoFallback(Throwable throwable){ //precisa aceitar o msm numero de parametros + throwable
+		logger.debug("getBuildInfoFallback() method Invoked");
+		return ResponseEntity.status(HttpStatus.OK).body("0.9");
 	}
 	
 	@Operation(
@@ -123,9 +138,14 @@ public class AccountsController {
 	@ApiResponse(
 			responseCode="200",
 			description="HTTP Status OK")
+	@RateLimiter(name= "getProcessors", fallbackMethod = "getProcessorsFallback")
 	@GetMapping("/processors")
-	public ResponseEntity<String> getJavaVersion(){
+	public ResponseEntity<String> getProcessors(){
 		return ResponseEntity.status(HttpStatus.OK).body(environment.getProperty("NUMBER_OF_PROCESSORS"));
+	}
+	
+	public ResponseEntity<String> getProcessorsFallback(Throwable throwable){
+		return ResponseEntity.status(HttpStatus.OK).body("4");
 	}
 	
 	@Operation(
