@@ -14,13 +14,18 @@ spring:
           lowerCaseServiceId: true
       httpclient: #isso será aplicado a todos os microsserviços e caminhos que passam pelo servidor de gateway
         connect-timeout: 1000
-        response-timeout: 2000
+        response-timeout: 10000
   data:
     redis:
       connect-timeout: 2s
       host: localhost
       port: 6379
       timeout: 1s
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: "http://localhost:7080/realms/master/protocol/openid-connect/certs"
           
 management:
   endpoints:
@@ -33,6 +38,9 @@ management:
   info:
     env:
       enabled: true
+  metrics:
+    tags:
+      application: ${spring.application.name}
       
 info:
   app:
@@ -45,6 +53,8 @@ logging:
     com:
       eazybytes:
         gatewayserver: DEBUG
+  pattern:
+    level: "%5p [${spring.application.name},%X{trace_id},%X{span_id}]"
         
 resilience4j.circuitbreaker:
   configs:

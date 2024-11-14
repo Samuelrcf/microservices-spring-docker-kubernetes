@@ -9,7 +9,7 @@ import com.eazybytes.accounts.dto.CardsDto;
 public class CardsFallback implements CardsFeignClient{
 
     @Override
-    public ResponseEntity<CardsDto> fetchCard(String correlationId, String mobileNumber) {
+    public ResponseEntity<CardsDto> fetchCard(String mobileNumber) {
         return null;
     }
 

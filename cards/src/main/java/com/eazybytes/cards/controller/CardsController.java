@@ -1,7 +1,5 @@
 package com.eazybytes.cards.controller;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
@@ -39,9 +37,6 @@ import jakarta.validation.constraints.Pattern;
 		description="CRUD REST API in SRBank to CREATE, UPDATE, FETCH AND DELETE cards details")
 public class CardsController {
 	
-	private static final Logger logger = LoggerFactory.getLogger(CardsController.class);
-
-
 	private ICardsService iCardsService;
 	
 	@Value("${build.version}")
@@ -78,10 +73,9 @@ public class CardsController {
 			responseCode="200",
 			description="HTTP Status OK")
 	@GetMapping("/fetch")
-	public ResponseEntity<CardDto> fetchCard(@RequestHeader("eazybank-correlation-id") String correlationId,
-			@RequestParam @NotBlank(message = "Mobile number cannot be empty") @Pattern(regexp = "^$|[0-9]{10}", message = "Mobile number must be 10 digits") String mobileNumber) {
-		logger.debug("eazyBank-correlation-id found: {}", correlationId);
-		return ResponseEntity.status(HttpStatus.OK).body(iCardsService.fetchCard(mobileNumber));
+	public ResponseEntity<CardDto> fetchCard(@RequestParam @NotBlank(message = "Mobile number cannot be empty") @Pattern(regexp = "^$|[0-9]{10}", message = "Mobile number must be 10 digits") String mobileNumber) {
+		CardDto cardDto = iCardsService.fetchCard(mobileNumber);
+		return ResponseEntity.status(HttpStatus.OK).body(cardDto);
 	}
 
 	@Operation(
@@ -138,8 +132,6 @@ public class CardsController {
 			description="HTTP Status OK")
 	@GetMapping("/contact-info")
 	public ResponseEntity<CardsContactInfoDto> getContactInfo(@RequestHeader("eazybank-correlation-id") String correlationId){
-		logger.debug("Invoked Cards contact-info API");
-		logger.debug("eazyBank-correlation-id found: {}", correlationId);
 		return ResponseEntity.status(HttpStatus.OK).body(cardsContactInfoDto);
 	}
 }
