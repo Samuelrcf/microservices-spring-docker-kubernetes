@@ -57,7 +57,14 @@
 			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
 			<version>2.6.0</version>
 		</dependency>
-
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-stream</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-stream-binder-kafka</artifactId>
+		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-validation</artifactId>
@@ -135,7 +142,7 @@
 				<version>3.4.2</version>
 				<configuration>
 					<to>
-						<image>samuelrcf22/${project.artifactId}:s12</image>
+						<image>samuelrcf22/${project.artifactId}:s14</image>
 					</to>
 				</configuration>
 			</plugin>

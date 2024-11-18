@@ -121,7 +121,7 @@
 				<version>3.4.2</version>
 				<configuration>
 					<to>
-						<image>samuelrcf22/${project.artifactId}:s12</image>
+						<image>samuelrcf22/${project.artifactId}:s14</image>
 					</to>
 				</configuration>
 			</plugin>
